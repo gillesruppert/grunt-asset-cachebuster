@@ -26,10 +26,12 @@ In your project's Gruntfile, add a section named `asset_cachebuster` to the data
 grunt.initConfig({
   asset_cachebuster: {
     options: {
-      // Task-specific options go here.
+      buster: Date.now(),
+      htmlExtension: 'html'
     },
     your_target: {
       // Target-specific file lists and/or options go here.
+      // make sure you have separate file lists for your CSS and HTML files
     },
   },
 })
@@ -37,53 +39,113 @@ grunt.initConfig({
 
 ### Options
 
-#### options.separator
+#### options.buster
 Type: `String`
-Default value: `',  '`
+Default value: `'123456'`
 
-A string value that is used to do something with whatever.
+A string value that is used to append to the url of your assets. Generally, you
+want this to be a timestamp or the version number of your app.
 
-#### options.punctuation
+#### options.htmlExtension
 Type: `String`
-Default value: `'.'`
+Default value: `'html'`
 
-A string value that is used to do something else with whatever else.
+The extension of html assets. This is useful if you use a templating language
+for your html where you want to cachebust assets, i.e. `'handlebars'`
 
 ### Usage Examples
 
 #### Default Options
-In this example, the default options are used to do something with whatever. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result would be `Testing, 1 2 3.`
 
 ```js
 grunt.initConfig({
   asset_cachebuster: {
     options: {},
     files: {
-      'dest/default_options': ['src/testing', 'src/123'],
+      'dest/default_options.css': ['src/testing.css'],
+      'dest/default_options.html': ['src/testing.html'],
     },
   },
 })
 ```
 
-#### Custom Options
-In this example, custom options are used to do something else with whatever else. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result in this case would be `Testing: 1 2 3 !!!`
+In this example, the default options are used to cachebust html and css files.
+So if the `testing.css` or `testing.html` files have content such as 
 
+```css
+h1 {
+  background-image: url('testing.png');
+}
+```
+or
+```html
+<script src="testing.js"></src>
+<link href="testing.css" rel="stylesheet">
+<img src="testing.png">
+```
+the generated result would be
+
+```css
+h1 {
+  background-image: url('testing.png?v=123456');
+}
+```
+or
+```html
+<script src="testing.js?v=123456"></src>
+<link href="testing.css?v=123456" rel="stylesheet">
+<img src="testing.png?v=123456">
+```
+
+
+#### Custom Options
 ```js
 grunt.initConfig({
   asset_cachebuster: {
     options: {
-      separator: ': ',
-      punctuation: ' !!!',
+      buster: '0.1.0',
+      htmlExtension: 'htm'
     },
     files: {
-      'dest/default_options': ['src/testing', 'src/123'],
+      'dest/default_options.css': ['src/testing.css'],
+      'dest/default_options.htm': ['src/testing.htm'],
     },
   },
 })
 ```
+
+In this example, custom options are used to cachebust htm and css files.
+So if the `testing.css` or `testing.htm` files have content such as 
+
+```css
+h1 {
+  background-image: url('testing.png');
+}
+```
+or
+```html
+<script src="testing.js"></src>
+<link href="testing.css" rel="stylesheet">
+<img src="testing.png">
+```
+the generated result would be
+
+```css
+h1 {
+  background-image: url('testing.png?v=0.1.0');
+}
+```
+or
+```html
+<script src="testing.js?v=0.1.0"></src>
+<link href="testing.css?v=0.1.0" rel="stylesheet">
+<img src="testing.png?v=0.1.0">
+```
+
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
-_(Nothing yet)_
+
+ * 2013-10-07   v0.1.0   initial release
