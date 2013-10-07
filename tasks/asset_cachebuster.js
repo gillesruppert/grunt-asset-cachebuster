@@ -46,7 +46,7 @@ module.exports = function(grunt) {
     } else {
       grunt.file.write(files.dest, cacheBustHtml(src, options.buster));
     }
-    grunt.log.writeln('File "' + files.dest + '" created.');
+    grunt.log.writeln('Assets in "' + files.dest + '" cachebusted.');
   }
 
   // Please see the Grunt documentation for more information regarding task
@@ -75,7 +75,7 @@ module.exports = function(grunt) {
         cacheBust(src, files, options);
       } catch (e) {
         grunt.log.error('ERROR:', e.message, e);
-        grunt.fail.warn('Failed to write file: ' + files.dest);
+        grunt.fail.warn('Failed to cachebust assets in: ' + files.dest);
       }
     });
 
