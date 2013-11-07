@@ -32,8 +32,8 @@ grunt.initConfig({
     your_target: {
       // Target-specific file lists and/or options go here.
       // make sure you have separate file lists for your CSS and HTML files
-    },
-  },
+    }
+  }
 })
 ```
 
@@ -61,11 +61,13 @@ for your html where you want to cachebust assets, i.e. `'handlebars'`
 grunt.initConfig({
   asset_cachebuster: {
     options: {},
-    files: {
-      'dest/default_options.css': ['src/testing.css'],
-      'dest/default_options.html': ['src/testing.html'],
-    },
-  },
+    build: {
+      files: {
+        'dest/default_options.css': ['src/testing.css'],
+        'dest/default_options.html': ['src/testing.html']
+      }
+    }
+  }
 })
 ```
 
@@ -106,11 +108,13 @@ grunt.initConfig({
       buster: '0.1.0',
       htmlExtension: 'htm'
     },
-    files: {
-      'dest/default_options.css': ['src/testing.css'],
-      'dest/default_options.htm': ['src/testing.htm'],
-    },
-  },
+    build: {
+      files: {
+        'dest/default_options.css': ['src/testing.css'],
+        'dest/default_options.htm': ['src/testing.htm']
+      }
+    }
+  }
 })
 ```
 
