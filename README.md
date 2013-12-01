@@ -17,7 +17,7 @@ Once the plugin has been installed, it may be enabled inside your Gruntfile with
 grunt.loadNpmTasks('grunt-asset-cachebuster');
 ```
 
-## The "asset_cachebuster" task
+## The `asset_cachebuster` task
 
 ### Overview
 In your project's Gruntfile, add a section named `asset_cachebuster` to the data object passed into `grunt.initConfig()`.
@@ -27,6 +27,7 @@ grunt.initConfig({
   asset_cachebuster: {
     options: {
       buster: Date.now(),
+      ignore: [],
       htmlExtension: 'html'
     },
     your_target: {
@@ -52,6 +53,14 @@ Default value: `'html'`
 
 The extension of html assets. This is useful if you use a templating language
 for your html where you want to cachebust assets, i.e. `'handlebars'`
+
+#### options.ignore
+Type: `Array`
+Default value: `[]`
+
+Array of strings that if found in the url are **not** busted. This is useful if
+you have some assets on CDNs or in a particular folder that are never changed
+and hence should not be cachebusted.
 
 ### Usage Examples
 
@@ -106,6 +115,9 @@ grunt.initConfig({
   asset_cachebuster: {
     options: {
       buster: '0.1.0',
+      ignore: [
+        '//my.cdn.example.com'
+      ],
       htmlExtension: 'htm'
     },
     build: {
@@ -118,17 +130,22 @@ grunt.initConfig({
 })
 ```
 
-In this example, custom options are used to cachebust htm and css files.
+In this example, custom options are used to cachebust htm and css files. URLs
+that contain `//my.cdn.example.com` are *not* cachebusted.
 So if the `testing.css` or `testing.htm` files have content such as 
 
 ```css
 h1 {
   background-image: url('testing.png');
 }
+h2 {
+  background-image: url('//my.cdn.example.com/testing.png');
+}
 ```
 or
 ```html
 <script src="testing.js"></src>
+<script src="//my.cdn.example.com/testing.js"></src>
 <link href="testing.css" rel="stylesheet">
 <img src="testing.png">
 ```
@@ -138,10 +155,14 @@ the generated result would be
 h1 {
   background-image: url('testing.png?v=0.1.0');
 }
+h2 {
+  background-image: url('//my.cdn.example.com/testing.png');
+}
 ```
 or
 ```html
 <script src="testing.js?v=0.1.0"></src>
+<script src="//my.cdn.example.com/testing.js"></src>
 <link href="testing.css?v=0.1.0" rel="stylesheet">
 <img src="testing.png?v=0.1.0">
 ```
@@ -152,4 +173,6 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+ * 2013-12-01   v0.2.0   add support for ignoring urls based on strings
+ * 2013-11-07   v0.1.1   fix documentation
  * 2013-10-07   v0.1.0   initial release
