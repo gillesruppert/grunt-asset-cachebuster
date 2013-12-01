@@ -8,6 +8,8 @@
 
 'use strict';
 
+var interpolate = require('interpolate');
+
 function isCss(filepath) {
   return (/\.css$/).test(filepath);
 }
@@ -17,28 +19,30 @@ function isHtml(filepath, extension) {
   return htmlTest.test(filepath);
 }
 
-function cacheBustCss(css, options) {
-  var img = /url\(['"]?(?!data:)([^)'"?]+)['"]?(?:\?v=[0-9]+)*\)/gi;
-  var buster = options.buster;
-  var ignores = options.ignore || [];
-  return css.replace(img, function (match, p1) {
-    if (!ignores.some(function (ignore) { return match.indexOf(ignore) > -1; })) {
-      return 'url(' + p1 + '?v=' + buster + ')';
+function replace(replacer, options) {
+  return function _replace(match, p1, p2) {
+    if (!options.ignore.some(function (ignore) { return match.indexOf(ignore) > -1; })) {
+      return interpolate(replacer, { p1: p1, p2: p2, buster: options.buster });
     } else {
-      return match.replace(/['"]/g, '');
+      return match;
     }
-  });
+  };
 }
 
-function cacheBustHtml(html, buster) {
+function cacheBustCss(css, options) {
+  var img = /url\(['"]?(?!data:)([^)'"?]+)['"]?(?:\?v=[0-9]+)*\)/gi;
+  return css.replace(img, replace('url({p1}?v={buster})', options));
+}
+
+function cacheBustHtml(html, options) {
   var css = /href="(.+\.css)"/gi;
-  html = html.replace(css, 'href="$1?v=' + buster + '"');
+  html = html.replace(css, replace('href="{p1}?v={buster}"', options));
 
   var js = /src="(.+\.js)"/gi;
-  html = html.replace(js, 'src="$1?v=' + buster + '"');
+  html = html.replace(js, replace('src="{p1}?v={buster}"', options));
 
   var images = /src="(.+\.)(png|gif|jpg|jpeg)"/gi;
-  html = html.replace(images, 'src="$1$2?v=' + buster + '"');
+  html = html.replace(images, replace('src="{p1}{p2}?v={buster}"', options));
   return html;
 }
 
@@ -50,9 +54,9 @@ module.exports = function(grunt) {
       grunt.file.write(files.dest, cacheBustCss(src, options));
     }
     else if (isHtml(files.dest, options.htmlExtension)) {
-      grunt.file.write(files.dest, cacheBustHtml(src, options.buster));
+      grunt.file.write(files.dest, cacheBustHtml(src, options));
     } else {
-      grunt.file.write(files.dest, cacheBustHtml(src, options.buster));
+      grunt.file.write(files.dest, cacheBustHtml(src, options));
     }
     grunt.log.writeln('Assets in "' + files.dest + '" cachebusted.');
   }
@@ -64,6 +68,7 @@ module.exports = function(grunt) {
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
       buster: '123456',
+      ignore: [],
       htmlExtension: 'html'
     });
 

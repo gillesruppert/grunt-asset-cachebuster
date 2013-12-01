@@ -46,5 +46,8 @@
     "image",
     "images",
     "cachebuster"
-  ]
+  ],
+  "dependencies": {
+    "interpolate": "~0.1.0"
+  }
 }

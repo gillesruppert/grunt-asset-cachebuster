@@ -3,11 +3,11 @@ h1 {
 }
 
 h2 {
-  background-image: url(//cdn.1.test.com/hello.png);
+  background-image: url('//cdn.1.test.com/hello.png');
 }
 
 h3 {
-  background-image: url(//cdn.2.test.com/hello.png);
+  background-image: url("//cdn.2.test.com/hello.png");
 }
 
 h4 {
