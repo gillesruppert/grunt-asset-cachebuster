@@ -17,9 +17,17 @@ function isHtml(filepath, extension) {
   return htmlTest.test(filepath);
 }
 
-function cacheBustCss(css, buster) {
+function cacheBustCss(css, options) {
   var img = /url\(['"]?(?!data:)([^)'"?]+)['"]?(?:\?v=[0-9]+)*\)/gi;
-  return css.replace(img, 'url($1?v=' + buster + ')');
+  var buster = options.buster;
+  var ignores = options.ignore || [];
+  return css.replace(img, function (match, p1) {
+    if (!ignores.some(function (ignore) { return match.indexOf(ignore) > -1; })) {
+      return 'url(' + p1 + '?v=' + buster + ')';
+    } else {
+      return match.replace(/['"]/g, '');
+    }
+  });
 }
 
 function cacheBustHtml(html, buster) {
@@ -39,7 +47,7 @@ module.exports = function(grunt) {
 
   function cacheBust(src, files, options) {
     if (isCss(files.dest)) {
-      grunt.file.write(files.dest, cacheBustCss(src, options.buster));
+      grunt.file.write(files.dest, cacheBustCss(src, options));
     }
     else if (isHtml(files.dest, options.htmlExtension)) {
       grunt.file.write(files.dest, cacheBustHtml(src, options.buster));

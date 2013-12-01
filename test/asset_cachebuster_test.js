@@ -65,4 +65,14 @@ exports.asset_cachebuster = {
     test.done();
   },
 
+  ignore_option_css: function(test) {
+    test.expect(1);
+
+    var actual = grunt.file.read('tmp/ignore_option.css');
+    var expected = grunt.file.read('test/expected/ignore_option.css');
+    test.equal(actual, expected, 'paths in the ignore option should not be busted');
+
+    test.done();
+  },
+
 };

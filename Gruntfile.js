@@ -46,6 +46,19 @@ module.exports = function(grunt) {
           'tmp/buster_option.css': ['test/fixtures/images.css'],
           'tmp/buster_option.html': ['test/fixtures/index.html'],
         }
+      },
+      ignore_option: {
+        options: {
+          buster: '0.2.0',
+          ignore: [
+            'cdn.1.test.com',
+            '//cdn.2.test.com',
+          ]
+        },
+        files: {
+          'tmp/ignore_option.css': ['test/fixtures/images.css'],
+          'tmp/ignore_option.html': ['test/fixtures/index.html'],
+        }
       }
     },
 
