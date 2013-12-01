@@ -38,6 +38,15 @@ module.exports = function(grunt) {
           'tmp/default_options.html': ['test/fixtures/index.html'],
         },
       },
+      buster_option: {
+        options: {
+          buster: '0.2.0'
+        },
+        files: {
+          'tmp/buster_option.css': ['test/fixtures/images.css'],
+          'tmp/buster_option.html': ['test/fixtures/index.html'],
+        }
+      }
     },
 
     // Unit tests.

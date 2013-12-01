@@ -45,4 +45,24 @@ exports.asset_cachebuster = {
 
     test.done();
   },
+
+  buster_option_css: function(test) {
+    test.expect(1);
+
+    var actual = grunt.file.read('tmp/buster_option.css');
+    var expected = grunt.file.read('test/expected/buster_option.css');
+    test.equal(actual, expected, 'CSS should have versioned images with buster option');
+
+    test.done();
+  },
+  buster_option_html: function(test) {
+    test.expect(1);
+
+    var actual = grunt.file.read('tmp/buster_option.html');
+    var expected = grunt.file.read('test/expected/buster_option.html');
+    test.equal(actual, expected, 'HTML should have versioned assets with buster option');
+
+    test.done();
+  },
+
 };
