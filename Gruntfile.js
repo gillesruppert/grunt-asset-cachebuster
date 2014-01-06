@@ -47,6 +47,17 @@ module.exports = function(grunt) {
           'tmp/buster_option.html': ['test/fixtures/index.html'],
         }
       },
+      buster_function_option: {
+        options: {
+          buster: function (url) {
+            return url.length;
+          }
+        },
+        files: {
+          'tmp/buster_function_option.css': ['test/fixtures/images.css'],
+          'tmp/buster_function_option.html': ['test/fixtures/index.html'],
+        }
+      },
       ignore_option: {
         options: {
           buster: '0.2.0',

@@ -41,11 +41,12 @@ grunt.initConfig({
 ### Options
 
 #### options.buster
-Type: `String`
+Type: `String | Function`
 Default value: `'123456'`
 
-A string value that is used to append to the url of your assets. Generally, you
-want this to be a timestamp or the version number of your app.
+A string value that is used to append to the url of your assets.
+If it is a function, the function is called with the url and the extension of a file to cachebust as parameters, and it must return a string.
+Generally, you want this to be a timestamp or the version number of your app.
 
 #### options.htmlExtension
 Type: `String`

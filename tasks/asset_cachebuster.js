@@ -19,10 +19,15 @@ function isHtml(filepath, extension) {
   return htmlTest.test(filepath);
 }
 
+function bust(buster, url) {
+  return (typeof buster === 'function') ? buster(url) : buster;
+}
+
 function replace(replacer, options) {
-  return function _replace(match, p1, p2) {
+  return function _replace(match, p1, p2, offset, string) {
     if (!options.ignore.some(function (ignore) { return match.indexOf(ignore) > -1; })) {
-      return interpolate(replacer, { p1: p1, p2: p2, buster: options.buster });
+      p2 = (arguments.length === 5) ? p2 : ""; // the regexp contains 1 or 2 parenthesized submatch
+      return interpolate(replacer, { p1: p1, p2: p2, buster: bust(options.buster, p1 + p2) });
     } else {
       return match;
     }
