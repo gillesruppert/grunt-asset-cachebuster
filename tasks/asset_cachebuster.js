@@ -19,10 +19,14 @@ function isHtml(filepath, extension) {
   return htmlTest.test(filepath);
 }
 
+function bust(buster, url) {
+  return (typeof buster === 'function') ? buster(url) : buster;
+}
+
 function replace(replacer, options) {
-  return function _replace(match, p1, p2) {
+  return function _replace(match, p1) {
     if (!options.ignore.some(function (ignore) { return match.indexOf(ignore) > -1; })) {
-      return interpolate(replacer, { p1: p1, p2: p2, buster: options.buster });
+      return interpolate(replacer, { p1: p1, buster: bust(options.buster, p1) });
     } else {
       return match;
     }
@@ -41,8 +45,8 @@ function cacheBustHtml(html, options) {
   var js = /src="(.+\.js)"/gi;
   html = html.replace(js, replace('src="{p1}?v={buster}"', options));
 
-  var images = /src="(.+\.)(png|gif|jpg|jpeg)"/gi;
-  html = html.replace(images, replace('src="{p1}{p2}?v={buster}"', options));
+  var images = /src="(.+\.png|gif|jpg|jpeg)"/gi;
+  html = html.replace(images, replace('src="{p1}?v={buster}"', options));
   return html;
 }
 

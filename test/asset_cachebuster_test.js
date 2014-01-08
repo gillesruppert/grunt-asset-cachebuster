@@ -65,6 +65,25 @@ exports.asset_cachebuster = {
     test.done();
   },
 
+  buster_function_option_css: function(test) {
+    test.expect(1);
+
+    var actual = grunt.file.read('tmp/buster_function_option.css');
+    var expected = grunt.file.read('test/expected/buster_function_option.css');
+    test.equal(actual, expected, 'CSS should have versioned images with buster option as function');
+
+    test.done();
+  },
+  buster_function_option_html: function(test) {
+    test.expect(1);
+
+    var actual = grunt.file.read('tmp/buster_function_option.html');
+    var expected = grunt.file.read('test/expected/buster_function_option.html');
+    test.equal(actual, expected, 'HTML should have versioned assets with buster option as function');
+
+    test.done();
+  },
+
   ignore_option_css: function(test) {
     test.expect(1);
 
