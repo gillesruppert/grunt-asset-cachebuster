@@ -45,7 +45,7 @@ function cacheBustHtml(html, options) {
   var js = /src="(.+\.js)"/gi;
   html = html.replace(js, replace('src="{p1}?v={buster}"', options));
 
-  var images = /src="(.+\.(?:png|gif|jpg|jpeg))"/gi;
+  var images = /src="(.+\.(?:png|gif|jpg|jpeg|svg))"/gi;
   html = html.replace(images, replace('src="{p1}?v={buster}"', options));
   return html;
 }
