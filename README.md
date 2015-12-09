@@ -174,6 +174,7 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+ * 2015-12-08   v0.4.0   add support for cachebusting SVG files. Contributed by @kyusu
  * 2014-05-01   v0.3.1   fix: images in HTML other than png were not busted
  * 2014-01-08   v0.3.0   allow a function as a buster. Contributed by @tleruitte
  * 2013-12-01   v0.2.0   add support for ignoring urls based on strings
