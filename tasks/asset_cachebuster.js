@@ -35,7 +35,7 @@ function replace(replacer, options) {
 
 function cacheBustCss(css, options) {
   var img = /url\(['"]?(?!data:)([^)'"?]+)['"]?(?:\?v=[0-9]+)*\)/gi;
-  return css.replace(img, replace('url({p1}?v={buster})', options));
+  return css.replace(img, replace('url("{p1}?v={buster}")', options));
 }
 
 function cacheBustHtml(html, options) {
